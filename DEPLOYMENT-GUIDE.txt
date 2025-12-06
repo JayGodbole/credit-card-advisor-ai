@@ -1,0 +1,49 @@
+CREDIT CARD ADVISOR AI - DEPLOYMENT GUIDE
+=========================================
+
+To deploy your Credit Card Advisor AI app to Vercel for free, follow these steps:
+
+1. CREATE A GITHUB ACCOUNT (if you don't have one):
+   - Go to https://github.com
+   - Sign up for a free account
+
+2. INSTALL GIT ON YOUR COMPUTER:
+   - Download Git from https://git-scm.com/downloads
+   - Install it following the setup wizard
+
+3. PUSH YOUR CODE TO GITHUB:
+   - Open Terminal/Command Prompt
+   - Navigate to your project folder:
+     cd "c:\Users\JAY\Desktop\New folder"
+   - Initialize Git repository:
+     git init
+   - Add all files:
+     git add .
+   - Commit the files:
+     git commit -m "Initial commit"
+   - Create a new repository on GitHub
+   - Follow GitHub's instructions to push your code
+
+4. DEPLOY TO VERCEL:
+   - Go to https://vercel.com
+   - Sign up/Login with your GitHub account
+   - Click "New Project"
+   - Import your GitHub repository
+   - Click "Deploy"
+   - Wait for deployment to complete
+   - Your app will be live at a vercel.app URL
+
+5. CUSTOM DOMAIN (optional):
+   - In Vercel dashboard, go to your project
+   - Click "Settings" -> "Domains"
+   - Add your custom domain
+   - Follow DNS configuration instructions
+
+BENEFITS OF VERCEL DEPLOYMENT:
+- Free hosting with generous limits
+- Automatic SSL/HTTPS
+- Global CDN for fast loading
+- Automatic deployments on code updates
+- Custom domains supported
+
+ESTIMATED TIME: 15-20 minutes for first deployment

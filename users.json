@@ -1,0 +1,23 @@
+[
+  {
+    "id": "1764952704398",
+    "name": "Test User",
+    "email": "test@example.com",
+    "password": "password123",
+    "createdAt": "2025-12-05T16:38:24.399Z"
+  },
+  {
+    "id": "1764952922125",
+    "name": "Stockfish",
+    "email": "iamstockfish2007@gmail.com",
+    "password": "stockfishrating@007",
+    "createdAt": "2025-12-05T16:42:02.125Z"
+  },
+  {
+    "id": "1764953097636",
+    "name": "jay",
+    "email": "godbolejay12345@gmail.com",
+    "password": "krk578",
+    "createdAt": "2025-12-05T16:44:57.636Z"
+  }
+]
