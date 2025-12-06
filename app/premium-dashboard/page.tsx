@@ -12,9 +12,13 @@ export default function PremiumDashboardPage() {
     setTimeout(() => {
       // In a real app, this would come from your authentication system
       setUser({
-        name: "John Doe",
-        email: "john@example.com",
-        memberSince: "January 2024",
+        name: "Premium Member",
+        email: "",
+        memberSince: new Date().toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        }),
         subscriptionActive: true
       });
       setIsLoading(false);
@@ -77,7 +81,7 @@ export default function PremiumDashboardPage() {
                   </div>
                   <div>
                     <p className="font-semibold text-gray-900">{user.name}</p>
-                    <p className="text-sm text-gray-600">Pro Member</p>
+                    <p className="text-sm text-gray-600">Member since {user.memberSince}</p>
                   </div>
                 </div>
               </div>
