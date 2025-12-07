@@ -58,6 +58,18 @@ export default function ChatBot() {
     }
   };
 
+  // Function to format the AI response with better spacing and structure
+  const formatResponse = (content: string) => {
+    // Split content into paragraphs
+    const paragraphs = content.split('\n\n');
+    
+    return paragraphs.map((paragraph, index) => (
+      <p key={index} className="mb-3 last:mb-0">
+        {paragraph}
+      </p>
+    ));
+  };
+
   return (
     <div className="flex flex-col h-[500px] border border-gray-200 rounded-xl overflow-hidden">
       <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-4 text-white">
@@ -78,7 +90,7 @@ export default function ChatBot() {
                   : 'bg-gray-100 text-gray-800 rounded-bl-none'
               }`}
             >
-              {message.content}
+              {message.role === 'assistant' ? formatResponse(message.content) : message.content}
             </div>
           </div>
         ))}
