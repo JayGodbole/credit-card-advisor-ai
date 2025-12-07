@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import ChatBot from '@/app/components/ChatBot';
 
 export default function PremiumDashboardPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -270,6 +271,13 @@ export default function PremiumDashboardPage() {
                 >
                   Get More Recommendations
                 </Link>
+              </div>
+              
+              {/* AI Chatbot */}
+              <div className="mt-12">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">AI Chat Assistant</h2>
+                <p className="text-gray-600 mb-6">Ask me anything about credit cards, rewards, or financial advice.</p>
+                <ChatBot />
               </div>
             </>
           )}
