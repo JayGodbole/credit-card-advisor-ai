@@ -2,8 +2,10 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   try {
+    console.log('Chat API called');
     const body = await request.json();
     const { message } = body;
+    console.log('Received message:', message);
 
     // Validate required fields
     if (!message) {
@@ -14,6 +16,7 @@ export async function POST(request: Request) {
     }
 
     // Connect to local AI model (Ollama)
+    console.log('Connecting to Ollama API');
     const response = await fetch('http://localhost:11434/api/generate', {
       method: 'POST',
       headers: {
@@ -26,7 +29,9 @@ export async function POST(request: Request) {
       }),
     });
 
+    console.log('Ollama API response status:', response.status);
     const data = await response.json();
+    console.log('Ollama API response data:', data);
     
     if (!response.ok) {
       throw new Error(data.error || 'Failed to generate response');
