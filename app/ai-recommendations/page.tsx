@@ -3,19 +3,99 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
+interface Recommendation {
+  id: number;
+  name: string;
+  issuer: string;
+  annualFee: number;
+  cashback: string;
+  introOffer: string;
+  rating: number;
+  bestFor: string;
+  estimatedSavings: number;
+  features: string[];
+  explanation: string;
+}
+
+interface AIInsights {
+  summary: string;
+  insights: string[];
+  recommendations: string[];
+}
+
 export default function AIRecommendationsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [sortBy, setSortBy] = useState('recommended');
+  const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
+  const [aiInsights, setAiInsights] = useState<AIInsights | null>(null);
 
   useEffect(() => {
-    // Simulate loading data
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+    // Fetch AI recommendations from our API
+    fetchAIRecommendations();
   }, []);
 
-  // Mock data for card recommendations
-  const cardRecommendations = [
+  const fetchAIRecommendations = async () => {
+    try {
+      // Mock user data and spending patterns
+      // In a real app, this would come from user input or stored data
+      const userData = {
+        id: 1,
+        name: "Premium Member"
+      };
+      
+      const spendingPatterns = {
+        travel: 31,
+        groceries: 25,
+        dining: 17,
+        shopping: 15,
+        utilities: 12
+      };
+
+      const response = await fetch('/api/ai-recommendations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userData,
+          spendingPatterns
+        }),
+      });
+
+      const data = await response.json();
+      
+      if (response.ok) {
+        setRecommendations(data.recommendations);
+        // Mock AI insights (would come from AI model in real implementation)
+        setAiInsights({
+          summary: "Mixed spending patterns with emphasis on travel and groceries",
+          insights: [
+            "Travel spending (31%) suggests a travel rewards card",
+            "Grocery spending (25%) indicates a cashback card would be beneficial",
+            "Overall pattern shows responsible spending habits"
+          ],
+          recommendations: [
+            "Consider a travel rewards card for maximum travel savings",
+            "A grocery-focused cashback card could save ₹1,200+ annually",
+            "A no-annual-fee general cashback card provides flexibility"
+          ]
+        });
+      } else {
+        // Fallback to mock data if API fails
+        setRecommendations(getMockRecommendations());
+        setAiInsights(getMockAIInsights());
+      }
+    } catch (error) {
+      console.error('Error fetching AI recommendations:', error);
+      // Fallback to mock data if API fails
+      setRecommendations(getMockRecommendations());
+      setAiInsights(getMockAIInsights());
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const getMockRecommendations = () => [
     {
       id: 1,
       name: "Platinum Travel Rewards Card",
@@ -27,7 +107,7 @@ export default function AIRecommendationsPage() {
       bestFor: "Frequent travelers",
       estimatedSavings: 2450,
       features: ["Airport lounge access", "No foreign transaction fees", "Travel insurance"],
-      image: "/placeholder-card-1.jpg"
+      explanation: "Based on your travel spending, this card maximizes your rewards with 3% cashback on all travel purchases."
     },
     {
       id: 2,
@@ -40,7 +120,7 @@ export default function AIRecommendationsPage() {
       bestFor: "General spending",
       estimatedSavings: 1200,
       features: ["No annual fee", "Zero liability protection", "Mobile wallet support"],
-      image: "/placeholder-card-2.jpg"
+      explanation: "A solid all-around card with no annual fee and consistent cashback on all purchases."
     },
     {
       id: 3,
@@ -53,7 +133,7 @@ export default function AIRecommendationsPage() {
       bestFor: "Family shoppers",
       estimatedSavings: 1800,
       features: ["Extended warranty", "Purchase protection", "Concierge service"],
-      image: "/placeholder-card-3.jpg"
+      explanation: "With significant grocery spending, this card offers the highest cashback in that category."
     },
     {
       id: 4,
@@ -66,11 +146,25 @@ export default function AIRecommendationsPage() {
       bestFor: "Small business owners",
       estimatedSavings: 3200,
       features: ["Business expense tracking", "Employee cards", "Tax deduction reporting"],
-      image: "/placeholder-card-4.jpg"
+      explanation: "Designed for business owners with expense tracking features."
     }
   ];
 
-  const sortedCards = [...cardRecommendations].sort((a, b) => {
+  const getMockAIInsights = () => ({
+    summary: "Mixed spending patterns with emphasis on travel and groceries",
+    insights: [
+      "Travel spending (31%) suggests a travel rewards card",
+      "Grocery spending (25%) indicates a cashback card would be beneficial",
+      "Overall pattern shows responsible spending habits"
+    ],
+    recommendations: [
+      "Consider a travel rewards card for maximum travel savings",
+      "A grocery-focused cashback card could save ₹1,200+ annually",
+      "A no-annual-fee general cashback card provides flexibility"
+    ]
+  });
+
+  const sortedCards = [...recommendations].sort((a, b) => {
     if (sortBy === 'recommended') return b.rating - a.rating;
     if (sortBy === 'savings') return b.estimatedSavings - a.estimatedSavings;
     if (sortBy === 'fee') return a.annualFee - b.annualFee;

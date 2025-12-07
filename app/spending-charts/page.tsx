@@ -6,11 +6,26 @@ import { useState, useEffect } from 'react';
 export default function SpendingChartsPage() {
   const [activeTab, setActiveTab] = useState('monthly');
   const [isLoading, setIsLoading] = useState(true);
+  const [aiInsights, setAiInsights] = useState<any>(null);
 
   useEffect(() => {
     // Simulate loading data
     setTimeout(() => {
       setIsLoading(false);
+      // Mock AI insights (would come from AI model in real implementation)
+      setAiInsights({
+        summary: "Mixed spending patterns with emphasis on travel and groceries",
+        insights: [
+          "Travel spending (31%) suggests a travel rewards card",
+          "Grocery spending (25%) indicates a cashback card would be beneficial",
+          "Overall pattern shows responsible spending habits"
+        ],
+        recommendations: [
+          "Consider a travel rewards card for maximum travel savings",
+          "A grocery-focused cashback card could save ₹1,200+ annually",
+          "A no-annual-fee general cashback card provides flexibility"
+        ]
+      });
     }, 1000);
   }, []);
 

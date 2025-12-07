@@ -1,0 +1,111 @@
+LOCAL AI MODEL SETUP GUIDE FOR CREDIT CARD ADVISOR APP
+=====================================================
+
+This guide explains how to set up a local AI model using Ollama for your Credit Card Advisor application.
+
+PREREQUISITES:
+--------------
+1. Windows 10 or later
+2. At least 8GB RAM (16GB recommended)
+3. 10GB free disk space
+
+STEP 1: INSTALL OLLAMA
+----------------------
+1. Download Ollama from: https://ollama.com/download/OllamaSetup.exe
+2. Run the installer and follow the setup wizard
+3. After installation, verify it works by opening Command Prompt and typing:
+   ollama --version
+
+STEP 2: DOWNLOAD AN AI MODEL
+----------------------------
+1. Open Command Prompt
+2. Download a suitable model (e.g., Llama 2) by running:
+   ollama pull llama2
+3. Alternatively, for a smaller/faster model:
+   ollama pull mistral
+
+STEP 3: START OLLAMA SERVICE
+----------------------------
+1. Ollama should start automatically after installation
+2. Verify the service is running:
+   ollama list
+
+STEP 4: TEST THE MODEL
+----------------------
+1. Test the model by running:
+   ollama run llama2
+2. Type a prompt like: "Recommend a credit card for someone who spends 30% on travel"
+3. Press Enter twice to submit the prompt
+4. Type "exit" to quit the interactive mode
+
+STEP 5: INTEGRATE WITH YOUR APP
+-------------------------------
+1. Your Next.js app can communicate with Ollama via HTTP requests
+2. Ollama runs on http://localhost:11434 by default
+3. Example API call to generate text:
+   
+   POST http://localhost:11434/api/generate
+   Content-Type: application/json
+   
+   {
+     "model": "llama2",
+     "prompt": "Recommend a credit card for someone who spends 30% on travel",
+     "stream": false
+   }
+
+STEP 6: REPLACE MOCK IMPLEMENTATION
+----------------------------------
+1. In your app/lib/localAI.ts file, uncomment the Ollama integration code
+2. Modify the generateAIRecommendations function to use real Ollama requests
+3. Update the analyzeSpendingPatterns function similarly
+
+STEP 7: DEPLOYMENT CONSIDERATIONS
+---------------------------------
+1. For production deployment, you'll need to:
+   - Install Ollama on your server
+   - Ensure the Ollama service is running
+   - Configure your Next.js app to connect to the Ollama API
+   - Handle API timeouts and errors gracefully
+
+ADVANCED CONFIGURATION:
+-----------------------
+1. Customize model parameters:
+   ollama run llama2 --parameter temperature=0.7
+   
+2. Create a custom model modelfile for credit card recommendations:
+   # Create a file called Modelfile with:
+   FROM llama2
+   SYSTEM """You are a credit card advisor expert. You provide personalized credit card recommendations based on spending patterns."""
+   
+   Then run: ollama create creditcard-advisor -f Modelfile
+
+TROUBLESHOOTING:
+----------------
+1. If Ollama isn't responding:
+   - Restart the Ollama service
+   - Check Windows Services for "Ollama"
+   
+2. If models aren't downloading:
+   - Check your internet connection
+   - Try a different model (mistral is smaller and faster)
+   
+3. If getting timeout errors:
+   - Increase timeout values in your API calls
+   - Consider using a smaller model
+
+BENEFITS OF LOCAL AI:
+---------------------
+1. No API costs
+2. Unlimited usage
+3. Complete data privacy
+4. No internet required after initial setup
+5. Full control over the model
+
+MODEL RECOMMENDATIONS:
+----------------------
+1. llama2 - Good balance of capability and size
+2. mistral - Faster and smaller, good for basic recommendations
+3. phi - Very small and efficient
+4. gemma - Google's lightweight model
+
+For your credit card advisor app, llama2 or mistral would be suitable choices.
