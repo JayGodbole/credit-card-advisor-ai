@@ -179,7 +179,7 @@ export default function ChatBot() {
       <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-4 text-white">
         <h3 className="font-bold text-lg">Credit Card Advisor AI</h3>
         <p className="text-blue-100 text-sm">Ask me anything about credit cards and financial advice</p>
-        <p className="text-blue-200 text-xs mt-1">Note: AI provides general guidance based on typical card features</p>
+        <p className="text-blue-200 text-xs mt-1">Note: AI provides general guidance. Ask specific questions like "Best card for dining" for card names.</p>
       </div>
       
       <div className="flex-1 overflow-y-auto p-4 bg-white">
