@@ -58,16 +58,120 @@ export default function ChatBot() {
     }
   };
 
+  // Function to detect if response contains chart data
+  const extractChartData = (content: string) => {
+    const chartRegex = /CHART_DATA_START:(.*?)CHART_DATA_END/;
+    const match = content.match(chartRegex);
+    if (match) {
+      try {
+        const chartData = JSON.parse(match[1]);
+        const cleanContent = content.replace(chartRegex, '').trim();
+        return { chartData, cleanContent };
+      } catch (e) {
+        return { chartData: null, cleanContent: content };
+      }
+    }
+    return { chartData: null, cleanContent: content };
+  };
+
+  // Simple bar chart component
+  const BarChart = ({ data }: { data: { labels: string[]; values: number[] } }) => {
+    const maxValue = Math.max(...data.values);
+    
+    return (
+      <div className="my-4 p-4 bg-gray-50 rounded-lg">
+        <div className="flex items-end justify-between h-40 gap-2">
+          {data.labels.map((label, index) => (
+            <div key={index} className="flex flex-col items-center flex-1">
+              <div className="text-xs text-gray-600 mb-1">{data.values[index]}</div>
+              <div 
+                className="w-full bg-blue-500 rounded-t hover:bg-blue-600 transition-all"
+                style={{ height: `${(data.values[index] / maxValue) * 100}%` }}
+              ></div>
+              <div className="text-xs text-gray-600 mt-1 text-center">{label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  // Simple pie chart component
+  const PieChart = ({ data }: { data: { labels: string[]; values: number[] } }) => {
+    const total = data.values.reduce((sum, value) => sum + value, 0);
+    let startAngle = 0;
+    
+    return (
+      <div className="my-4 flex flex-col items-center">
+        <div className="relative w-40 h-40 rounded-full">
+          {data.labels.map((label, index) => {
+            const percentage = (data.values[index] / total) * 100;
+            const angle = (percentage / 100) * 360;
+            const gradientId = `gradient-${index}`;
+            
+            // Inline styles for SVG segments
+            const segmentStyle = {
+              clipPath: `path('M 80,80 L ${80 + 80 * Math.cos((startAngle * Math.PI) / 180)},${80 + 80 * Math.sin((startAngle * Math.PI) / 180)} A 80,80 0 ${angle > 180 ? 1 : 0},1 ${80 + 80 * Math.cos(((startAngle + angle) * Math.PI) / 180)},${80 + 80 * Math.sin(((startAngle + angle) * Math.PI) / 180)} Z')`,
+              backgroundColor: `hsl(${(index * 60) % 360}, 70%, 50%)`
+            };
+            
+            startAngle += angle;
+            
+            return (
+              <div 
+                key={index}
+                className="absolute inset-0 rounded-full"
+                style={segmentStyle}
+              ></div>
+            );
+          })}
+        </div>
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          {data.labels.map((label, index) => (
+            <div key={index} className="flex items-center">
+              <div 
+                className="w-4 h-4 rounded mr-2"
+                style={{ backgroundColor: `hsl(${(index * 60) % 360}, 70%, 50%)` }}
+              ></div>
+              <span className="text-sm">{label}: {data.values[index]}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  // Function to render chart based on type
+  const renderChart = (chartData: any) => {
+    if (!chartData) return null;
+    
+    switch (chartData.type) {
+      case 'bar':
+        return <BarChart data={chartData.data} />;
+      case 'pie':
+        return <PieChart data={chartData.data} />;
+      default:
+        return null;
+    }
+  };
+
   // Function to format the AI response with better spacing and structure
   const formatResponse = (content: string) => {
-    // Split content into paragraphs
-    const paragraphs = content.split('\n\n');
+    const { chartData, cleanContent } = extractChartData(content);
     
-    return paragraphs.map((paragraph, index) => (
-      <p key={index} className="mb-3 last:mb-0">
-        {paragraph}
-      </p>
-    ));
+    // Split content into paragraphs
+    const paragraphs = cleanContent.split('\n\n');
+    
+    return (
+      <div>
+        {paragraphs.map((paragraph, index) => (
+          <p key={index} className="mb-3 last:mb-0">
+            {paragraph}
+          </p>
+        ))}
+        {renderChart(chartData)}
+      </div>
+    );
   };
 
   return (

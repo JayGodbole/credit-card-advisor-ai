@@ -15,7 +15,7 @@ export async function POST(request: Request) {
 
     // Determine response style based on question complexity
     let responseType = 'concise';
-    const longQuestionKeywords = ['analysis', 'compare', 'detailed', 'explain', 'how', 'why', 'benefits', 'advantages', 'disadvantages'];
+    const longQuestionKeywords = ['analysis', 'compare', 'detailed', 'explain', 'how', 'why', 'benefits', 'advantages', 'disadvantages', 'chart', 'graph', 'visualize'];
     
     if (longQuestionKeywords.some(keyword => message.toLowerCase().includes(keyword))) {
       responseType = 'detailed';
@@ -31,6 +31,10 @@ export async function POST(request: Request) {
       2. Specific examples when relevant
       3. Key considerations
       4. Actionable advice
+      
+      If the question involves numerical data that can be visualized (like comparing rewards rates, fees, or benefits), include a CHART_DATA section in your response using this format:
+      
+      CHART_DATA_START:{"type":"bar|pie","data":{"labels":["Label1","Label2"],"values":[10,20]}}CHART_DATA_END
       
       Even if you don't have the latest specific details about particular cards, provide general guidance based on typical features of similar cards. Focus on principles and patterns rather than exact current numbers.
       
