@@ -62,14 +62,7 @@ export async function POST(request: Request) {
     let formattedResponse = data.response;
     
     // Clean up the response by removing extra whitespace and formatting
-    formattedResponse = formattedResponse
-      .replace(/
-\s*
-\s*
-/g, '
-
-') // Remove extra blank lines
-      .trim();
+    formattedResponse = formattedResponse.trim();
 
     return NextResponse.json({
       response: formattedResponse
